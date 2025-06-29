@@ -3,9 +3,7 @@ package server
 import (
 	"ai-household-budge/internal/infrastructure/config"
 	"ai-household-budge/internal/infrastructure/middleware"
-	"ai-household-budge/internal/infrastructure/persistence"
 	"ai-household-budge/internal/presentation/handler"
-	"ai-household-budge/internal/usecase"
 	"fmt"
 
 	"github.com/labstack/echo/v4"
@@ -86,16 +84,17 @@ func (s *Server) setupRoutes(apiKeyMiddleware *middleware.APIKeyMiddleware) {
 	api.Use(apiKeyMiddleware.Authenticate)
 
 	// チャット分析関連のエンドポイント
-	chatHandler := handler.NewChatHandler(s.createChatUseCase())
-	api.POST("/chat/analyze", chatHandler.HandleChat)
-	api.GET("/chat/health", chatHandler.HandleHealth)
+	// chatHandler := handler.NewChatHandler(s.createChatUseCase())
+	// api.POST("/chat/analyze", chatHandler.HandleChat)
+	// api.GET("/chat/health", chatHandler.HandleHealth)
 }
 
-func (s *Server) createChatUseCase() usecase.ChatUseCase {
-	// 分析リポジトリの初期化
-	analysisRepo := persistence.NewAnalysisRepository(s.db)
-	return usecase.NewChatUseCase(analysisRepo)
-}
+// func (s *Server) createChatUseCase() usecase.ChatUseCase {
+// 	// 分析リポジトリの初期化
+// 	// analysisRepo := persistence.NewAnalysisRepository(s.db)
+// 	// return usecase.NewChatUseCase(analysisRepo)
+// 	return nil
+// }
 
 func (s *Server) Start(address string) error {
 	return s.echo.Start(address)
